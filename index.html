@@ -2,13 +2,13 @@
 <html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cuentas Claras v2.3 - Master Edition</title>
-    
-    <meta name="theme-color" content="#3b82f6">
+<meta name="theme-color" content="#3b82f6">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkN1ZW50YXMgQ2xhcmFzIiwKICAic2hvcnRfbmFtZSI6ICJDdWVudGFzIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmOGZhZmMiLAogICJ0aGVtZV9jbG9yIjogIiMzYjgyZjYiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8yNDg5LzI0ODkwNjQucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
+    
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkN1ZW50YXMgQ2xhcmFzIiwKICAic2hvcnRfbmFtZSI6ICJDdWVudGFzIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmOGZhZmMiLAogICJ0aGVtZV9jbG9yIjogIiMzYjgyZjYiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8yNDg5LzI0ODkwNjQucG5nIiwKICAgIC2InNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
 
     <style>
         :root {
@@ -40,6 +40,7 @@
             border-radius: 16px; display: flex; align-items: center; gap: 15px; flex-wrap: wrap; box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
         }
         .quick-entry-bar input { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 10px; }
+        /* Placeholder Quick Entry Blanco Grisáceo */
         .quick-entry-bar input::placeholder { color: rgba(255, 255, 255, 0.75); }
 
         .ed-panel { background: #1e293b; color: white; padding: 20px; border-radius: 16px; display: none; margin-bottom: 10px; border: 1px solid #334155; }
@@ -56,7 +57,12 @@
         
         input, select { box-sizing: border-box; width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--card); color: var(--text); font-size: 0.9rem; transition: 0.2s; height: 42px; }
         input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+        
         ::placeholder { color: var(--muted); opacity: 1; }
+
+        input[type="date"]::before { content: attr(placeholder); color: var(--muted); width: 100%; margin-right: 0.5em; }
+        input[type="date"]:focus::before, input[type="date"]:valid::before { content: ""; width: 0%; }
+
         input[type="checkbox"] { width: auto; height: auto; cursor: pointer; }
 
         button { cursor: pointer; padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-weight: 600; transition: 0.2s; }
@@ -68,6 +74,7 @@
         th { color: var(--muted); font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.05em; padding: 12px; border-bottom: 2px solid var(--border); }
         td { padding: 14px 12px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
 
+        /* --- CORRECCIÓN MODAL v2.3 --- */
         #importModal { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; 
@@ -77,10 +84,19 @@
             background: var(--card); padding: 30px; border-radius: 20px; width: 350px; 
             box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3); border: 1px solid var(--border);
         }
+        .modal-content h3 { margin-top: 0; color: var(--primary); }
+        .modal-content label { display: block; padding: 8px 0; font-size: 0.95rem; cursor: pointer; }
 
         .cal-day { font-size: 0.8rem; border-radius: 8px; border: 1px solid var(--border); aspect-ratio: 1; display: flex; align-items: center; justify-content: center; background: var(--input-bg); cursor: default; position: relative; }
         .has-event { background: rgba(59, 130, 246, 0.15); border-color: var(--primary); color: var(--primary); font-weight: bold; }
         .is-today { background: var(--accent); color: white; border-color: var(--accent); transform: scale(1.1); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+
+        .cal-day:hover::after { 
+            content: attr(data-tooltip); position: absolute; bottom: 120%; left: 50%; transform: translateX(-50%); 
+            background: #1e293b; color: white; padding: 10px; border-radius: 8px; font-size: 0.75rem; 
+            white-space: pre-wrap; z-index: 1000; display: block; min-width: 160px; pointer-events: none; 
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); font-weight: normal; line-height: 1.4;
+        }
 
         .switch { position: relative; display: inline-block; width: 40px; height: 22px; vertical-align: middle; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -108,6 +124,7 @@
                 <h2 id="currentMonthLabel" style="margin:0; min-width:180px; font-weight: 800; text-transform: capitalize;"></h2>
                 <button onclick="changeMonth(1)">▶</button>
             </div>
+            <button onclick="resetMonth()" class="danger" style="margin-top:10px; padding: 4px 12px; font-size: 0.65rem; opacity: 0.8;">BORRAR DATOS DEL MES</button>
         </div>
         <div style="display:flex; gap:10px">
             <button onclick="toggleTheme()" style="background: var(--input-bg);">🌓</button>
@@ -137,63 +154,106 @@
             </div>
         </div>
 
-        <section class="section-card">
+        <section class="section-card" style="border-left: 5px solid var(--accent)">
             <h3 style="margin-top:0">🛒 Gastos Diarios</h3>
             <table>
-                <thead><tr><th width="80">Día</th><th>Concepto</th><th>Monto</th><th width="50"></th></tr></thead>
+                <thead><tr><th width="80">Día</th><th>Concepto</th><th>Categoría</th><th>Monto</th><th width="50"></th></tr></thead>
                 <tbody id="dailyTableBody"></tbody>
             </table>
         </section>
 
         <section class="section-card">
-            <h3>💰 Ingresos</h3>
+            <h3>💰 Ingresos del Mes</h3>
             <div class="grid-inputs">
+                <input type="date" id="incDate">
                 <input type="text" id="incDesc" placeholder="Descripción">
                 <input type="number" id="incAmount" placeholder="Monto">
-                <button class="success" onclick="addItem('income')">+ Agregar</button>
+                <button class="success" onclick="addIncome()">+ Agregar</button>
             </div>
-            <table id="incTable"><thead><tr><th>Descripción</th><th>Monto</th><th></th></tr></thead><tbody id="incTableBody"></tbody></table>
+            <table id="incTable"><thead><tr><th>Fecha</th><th>Descripción</th><th>Monto</th><th></th></tr></thead><tbody id="incTableBody"></tbody></table>
         </section>
 
         <section class="section-card">
-            <h3>📺 Suscripciones / Fijos</h3>
+            <h3>📺 Suscripciones y Recurrentes</h3>
             <div class="grid-inputs">
                 <input type="text" id="subName" placeholder="Servicio">
                 <input type="number" id="subAmount" placeholder="Monto">
                 <input type="number" id="subDay" placeholder="Día (1-31)">
-                <button class="primary" onclick="addItem('subs')">+ Agregar</button>
+                <button class="primary" onclick="addSubscription()">+ Agregar</button>
             </div>
-            <table><thead><tr><th>Día</th><th>Servicio</th><th>Monto</th><th></th></tr></thead><tbody id="subTableBody"></tbody></table>
+            <table><thead><tr><th width="50">Pago</th><th>Día</th><th>Servicio</th><th>Monto</th><th></th></tr></thead><tbody id="subTableBody"></tbody></table>
         </section>
 
         <section class="section-card">
-            <h3>💳 Tarjetas</h3>
+            <h3>💸 Facturas y Gastos Fijos</h3>
             <div class="grid-inputs">
-                <input type="text" id="ccName" placeholder="Nombre">
-                <input type="number" id="ccLimit" placeholder="Límite">
-                <input type="number" id="ccBalance" placeholder="Saldo">
-                <input type="number" id="ccPlan" placeholder="Pago Plan">
-                <button class="primary" onclick="addItem('cards')">+ Agregar</button>
+                <input type="date" id="expDate">
+                <input type="text" id="expDesc" placeholder="Concepto">
+                <select id="expCat">
+                    <option value="Vivienda">🏠 Vivienda</option>
+                    <option value="Servicios">⚡ Servicios</option>
+                    <option value="Comida">🍔 Comida</option>
+                    <option value="Ocio">🎬 Ocio</option>
+                </select>
+                <input type="number" id="expAmount" placeholder="Monto">
+                <button class="danger" onclick="addExpense()">+ Agregar</button>
             </div>
-            <table id="ccTableBody"></table>
+            <table id="expTable"><thead><tr><th width="50">Pago</th><th>Fecha</th><th>Concepto</th><th>Categoría</th><th>Monto</th><th></th></tr></thead><tbody id="expTableBody"></tbody></table>
+        </section>
+
+        <section class="section-card">
+            <h3>💳 Tarjetas de Crédito</h3>
+            <div class="grid-inputs" style="grid-template-columns: repeat(3, 1fr);">
+                <input type="text" id="ccName" placeholder="Nombre Tarjeta">
+                <input type="number" id="ccBalance" placeholder="Saldo Actual">
+                <input type="number" id="ccAPR" placeholder="APR %">
+                <input type="number" id="ccPlan" placeholder="Plan de Pago">
+                <input type="date" id="ccCorte" placeholder="Fecha de Corte" required>
+                <input type="date" id="ccVence" placeholder="Fecha Vencimiento" required>
+                <input type="number" id="ccLimit" placeholder="Límite Total">
+                <input type="number" id="ccPromo" placeholder="Monto 0% Interés">
+                <input type="date" id="ccPromoDate" placeholder="Fin Promo 0%" required>
+                <button class="primary" onclick="addCard()" style="grid-column: span 3;">+ Agregar Tarjeta</button>
+            </div>
+            <table>
+                <thead><tr><th>OK</th><th>Tarjeta</th><th>Saldo / Límite</th><th>Pago Plan</th><th>Vencimiento</th><th>Promo 0%</th><th></th></tr></thead>
+                <tbody id="ccTableBody"></tbody>
+            </table>
         </section>
     </div>
 
     <aside class="sidebar">
         <div class="section-card">
-            <h4 style="margin:0 0 15px 0; text-align:center">📅 Pagos</h4>
+            <h4 style="margin:0 0 15px 0; text-align:center">📅 Calendario de Pagos</h4>
             <div id="calendarGrid" style="display:grid; grid-template-columns:repeat(7,1fr); gap:6px;"></div>
         </div>
+        <div class="section-card">
+            <h4 style="margin:0 0 15px 0">📊 Distribución</h4>
+            <div id="categoryChart"></div>
+        </div>
+        <div class="section-card">
+            <h4 style="margin:0 0 15px 0">❄️ Bola de Nieve</h4>
+            <div id="snowballList" style="font-size:0.85rem"></div>
+        </div>
     </aside>
+
+    <div id="importModal">
+        <div class="modal-content">
+            <h3>Clonar Mes Anterior</h3>
+            <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 15px;">Selecciona qué secciones deseas copiar:</p>
+            <label><input type="checkbox" id="impInc" checked> Ingresos</label>
+            <label><input type="checkbox" id="impSub" checked> Suscripciones</label>
+            <label><input type="checkbox" id="impExp" checked> Gastos Fijos</label>
+            <label><input type="checkbox" id="impCC" checked> Tarjetas de Crédito</label>
+            <div style="display:flex; gap:10px; margin-top: 20px;">
+                <button class="primary" onclick="processImport()" style="flex:1">Importar</button>
+                <button onclick="closeImportModal()" style="flex:1">Cancelar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGV2ZW50ID0+IHsgZXZlbnQucmVzcG9uZFdpdGgoZmV0Y2goZXZlbnQucmVxdWVzdCkpOyB9KTs=');
-        });
-    }
-
     let currentDate = new Date();
     let appData = JSON.parse(localStorage.getItem('cuentasClarasData')) || {};
     let edMode = localStorage.getItem('edMode') === 'true';
@@ -201,99 +261,157 @@
 
     function getMonthKey(date) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`; }
     function saveData() { localStorage.setItem('cuentasClarasData', JSON.stringify(appData)); render(); }
-    function toggleEDMode() { edMode = document.getElementById('edToggle').checked; localStorage.setItem('edMode', edMode); render(); }
-    function toggleTheme() {
-        const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', theme);
-    }
+
     function togglePrivacy() {
         privacyMode = !privacyMode;
         document.getElementById('mainBody').classList.toggle('privacy-active', privacyMode);
         document.getElementById('privacyBtn').innerText = privacyMode ? "👁️ Privacidad: ON" : "👁️ Privacidad: OFF";
     }
 
-    function changeMonth(step) {
-        currentDate.setMonth(currentDate.getMonth() + step);
-        render();
+    function toggleEDMode() { edMode = document.getElementById('edToggle').checked; localStorage.setItem('edMode', edMode); render(); }
+
+    function render() {
+        const key = getMonthKey(currentDate);
+        if (!appData[key]) appData[key] = { income:[], expenses:[], cards:[], daily:[], subs:[] };
+        const d = appData[key];
+
+        document.getElementById('edToggle').checked = edMode;
+        document.getElementById('edPanel').style.display = edMode ? 'block' : 'none';
+        document.getElementById('currentMonthLabel').innerText = currentDate.toLocaleString('es', {month:'long', year:'numeric'});
+
+        let tInc = d.income.reduce((s,x)=>s+parseFloat(x.amount||0),0);
+        let tSub = (d.subs||[]).reduce((s,x)=>s+parseFloat(x.amount||0),0);
+        let tExp = d.expenses.reduce((s,x)=>s+parseFloat(x.amount||0),0) + tSub;
+        let tDaily = (d.daily||[]).reduce((s,x)=>s+parseFloat(x.amount||0),0);
+        let tCC = d.cards.reduce((s,x)=>s+parseFloat(x.plan||0),0);
+
+        document.getElementById('dailyTableBody').innerHTML = (d.daily||[]).map((x,i)=>`<tr><td>${x.date.split('-')[2]}</td><td class="editable" onclick="editItem('${key}','daily',${i},'desc')">${x.desc}</td><td><select onchange="updateDailyCat(${i},this.value)"><option value="Otros" ${x.cat==='Otros'?'selected':''}>Otros</option><option value="Comida" ${x.cat==='Comida'?'selected':''}>Comida</option></select></td><td class="blur-text"><strong>$${x.amount}</strong></td><td><button onclick="deleteItem('daily',${i})">🗑</button></td></tr>`).join('');
+        document.getElementById('incTableBody').innerHTML = d.income.map((x,i)=>`<tr><td>${x.date}</td><td class="editable" onclick="editItem('${key}','income',${i},'desc')">${x.desc}</td><td class="blur-text"><strong>$${x.amount}</strong></td><td><button onclick="deleteItem('income',${i})">🗑</button></td></tr>`).join('');
+        document.getElementById('subTableBody').innerHTML = (d.subs||[]).map((x,i)=>`<tr class="${x.paid?'paid-row':''}"><td><input type="checkbox" ${x.paid?'checked':''} onchange="togglePaid('subs',${i})"></td><td>${x.day}</td><td>${x.name}</td><td class="blur-text"><strong>$${x.amount}</strong></td><td><button onclick="deleteItem('subs',${i})">🗑</button></td></tr>`).join('');
+        document.getElementById('expTableBody').innerHTML = d.expenses.map((x,i)=>`<tr class="${x.paid?'paid-row':''}"><td><input type="checkbox" ${x.paid?'checked':''} onchange="togglePaid('expenses',${i})"></td><td>${x.date}</td><td>${x.desc}</td><td>${x.cat}</td><td class="blur-text"><strong>$${x.amount}</strong></td><td><button onclick="deleteItem('expenses',${i})">🗑</button></td></tr>`).join('');
+        
+        document.getElementById('ccTableBody').innerHTML = d.cards.map((x,i)=>{
+            const vDate = x.vence ? x.vence.split('-').reverse().join('/') : '-';
+            return `<tr class="${x.paid?'paid-row':''}"><td><input type="checkbox" ${x.paid?'checked':''} onchange="togglePaid('cards',${i})"></td><td><strong>${x.name}</strong></td><td class="blur-text">$${x.balance} / $${x.limit}</td><td class="blur-text">$${x.plan}</td><td>${vDate}</td><td class="blur-text">${x.promo > 0 ? '$'+x.promo : '-'}</td><td><button onclick="deleteItem('cards',${i})">🗑</button></td></tr>`;
+        }).join('');
+
+        const net = tInc - tExp - tDaily - tCC;
+        document.getElementById('edInc').innerText = `$${tInc.toFixed(0)}`;
+        document.getElementById('edExp').innerText = `$${(tExp+tDaily+tCC).toFixed(0)}`;
+        document.getElementById('edNet').innerText = `$${net.toFixed(0)}`;
+        
+        if(edMode) updateEveryDollar(tInc, tExp + tDaily + tCC);
+        renderCalendar(d);
+        updateSnowball(d.cards);
+        updateChart(d);
     }
 
-    function addItem(type) {
-        const key = getMonthKey(currentDate);
-        if(!appData[key]) appData[key] = { income:[], expenses:[], cards:[], daily:[], subs:[] };
-        
-        let item = {};
-        if(type === 'income') {
-            item = { desc: document.getElementById('incDesc').value, amount: parseFloat(document.getElementById('incAmount').value) };
-        } else if(type === 'subs') {
-            item = { name: document.getElementById('subName').value, amount: parseFloat(document.getElementById('subAmount').value), day: parseInt(document.getElementById('subDay').value) };
-        } else if(type === 'cards') {
-            item = { name: document.getElementById('ccName').value, limit: parseFloat(document.getElementById('ccLimit').value), balance: parseFloat(document.getElementById('ccBalance').value), plan: parseFloat(document.getElementById('ccPlan').value) };
+    function renderCalendar(data) {
+        const grid = document.getElementById('calendarGrid');
+        grid.innerHTML = ['D','L','M','M','J','V','S'].map(d=>`<div style="font-size:0.6rem; color:var(--muted); font-weight:bold">${d}</div>`).join('');
+        const year = currentDate.getFullYear(); const month = currentDate.getMonth();
+        const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const events = {};
+        data.expenses.forEach(e => { const d = new Date(e.date + 'T12:00:00').getDate(); if(!events[d]) events[d] = []; events[d].push(`💸 ${e.desc}: $${e.amount}`); });
+        data.cards.forEach(c => { if(c.vence) { const d = new Date(c.vence + 'T12:00:00').getDate(); if(!events[d]) events[d] = []; events[d].push(`💳 ${c.name}: $${c.plan}`); } });
+        (data.subs||[]).forEach(s => { const d = parseInt(s.day); if(!events[d]) events[d] = []; events[d].push(`📺 ${s.name}: $${s.amount}`); });
+        for (let i = 0; i < firstDay; i++) grid.innerHTML += `<div></div>`;
+        for (let d = 1; d <= daysInMonth; d++) {
+            const hasE = events[d] ? 'has-event' : '';
+            const isT = (d === new Date().getDate() && month === new Date().getMonth()) ? 'is-today' : '';
+            grid.innerHTML += `<div class="cal-day ${hasE} ${isT}" data-tooltip="${events[d] ? events[d].join('\n') : ''}">${d}</div>`;
         }
-        
-        appData[key][type].push(item);
-        saveData();
+    }
+
+    function addCard() { 
+        appData[getMonthKey(currentDate)].cards.push({ 
+            name: document.getElementById('ccName').value, 
+            balance: document.getElementById('ccBalance').value, 
+            apr: document.getElementById('ccAPR').value, 
+            plan: document.getElementById('ccPlan').value, 
+            corte: document.getElementById('ccCorte').value, 
+            vence: document.getElementById('ccVence').value, 
+            limit: document.getElementById('ccLimit').value, 
+            promo: document.getElementById('ccPromo').value, 
+            promoDate: document.getElementById('ccPromoDate').value, 
+            paid: false 
+        }); 
+        saveData(); 
+        ['ccName','ccBalance','ccAPR','ccPlan','ccCorte','ccVence','ccLimit','ccPromo','ccPromoDate'].forEach(id => document.getElementById(id).value = '');
     }
 
     function addQuickExpense() {
         const key = getMonthKey(currentDate);
-        if(!appData[key]) appData[key] = { income:[], expenses:[], cards:[], daily:[], subs:[] };
-        appData[key].daily.push({ 
-            date: new Date().toISOString().split('T')[0], 
-            desc: document.getElementById('qeDesc').value, 
-            amount: parseFloat(document.getElementById('qeAmount').value) 
-        });
-        document.getElementById('qeDesc').value = '';
-        document.getElementById('qeAmount').value = '';
-        saveData();
-    }
-
-    function deleteItem(type, index) {
-        const key = getMonthKey(currentDate);
-        appData[key][type].splice(index, 1);
-        saveData();
-    }
-
-    function render() {
-        const key = getMonthKey(currentDate);
-        const d = appData[key] || { income:[], expenses:[], cards:[], daily:[], subs:[] };
-        
-        document.getElementById('currentMonthLabel').innerText = currentDate.toLocaleString('es', {month:'long', year:'numeric'});
-        document.getElementById('edPanel').style.display = edMode ? 'block' : 'none';
-
-        // Tablas
-        document.getElementById('dailyTableBody').innerHTML = d.daily.map((x,i)=>`<tr><td>${x.date.split('-')[2]}</td><td>${x.desc}</td><td class="blur-text">$${x.amount}</td><td><button onclick="deleteItem('daily',${i})">🗑</button></td></tr>`).join('');
-        document.getElementById('incTableBody').innerHTML = d.income.map((x,i)=>`<tr><td>${x.desc}</td><td class="blur-text">$${x.amount}</td><td><button onclick="deleteItem('income',${i})">🗑</button></td></tr>`).join('');
-        document.getElementById('subTableBody').innerHTML = d.subs.map((x,i)=>`<tr><td>${x.day}</td><td>${x.name}</td><td class="blur-text">$${x.amount}</td><td><button onclick="deleteItem('subs',${i})">🗑</button></td></tr>`).join('');
-
-        // Resumen EveryDollar
-        let tInc = d.income.reduce((s,x)=>s+x.amount,0);
-        let tExp = d.daily.reduce((s,x)=>s+x.amount,0) + d.subs.reduce((s,x)=>s+x.amount,0) + d.cards.reduce((s,x)=>s+x.plan,0);
-        
-        document.getElementById('edInc').innerText = `$${tInc}`;
-        document.getElementById('edExp').innerText = `$${tExp}`;
-        document.getElementById('edNet').innerText = `$${tInc - tExp}`;
-        document.getElementById('edBar').style.width = tInc > 0 ? (tExp/tInc*100)+'%' : '0%';
-        document.getElementById('edStatus').innerText = `$${tInc - tExp} por asignar`;
-
-        // Calendario
-        let daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth()+1, 0).getDate();
-        let calHtml = '';
-        for(let i=1; i<=daysInMonth; i++) {
-            let hasPay = d.subs.some(s => s.day === i);
-            calHtml += `<div class="cal-day ${hasPay?'has-event':''}">${i}</div>`;
+        const desc = document.getElementById('qeDesc').value;
+        const amount = document.getElementById('qeAmount').value;
+        if(desc && amount) {
+            if(!appData[key].daily) appData[key].daily = [];
+            appData[key].daily.push({ date: new Date().toISOString().split('T')[0], desc, amount: parseFloat(amount), cat:'Otros' });
+            document.getElementById('qeDesc').value = ''; document.getElementById('qeAmount').value = '';
+            saveData();
         }
-        document.getElementById('calendarGrid').innerHTML = calHtml;
+    }
+
+    function updateChart(d) {
+        const cats = {};
+        [...d.expenses, ...(d.daily||[]), ...(d.subs||[]).map(s=>({...s, cat:'Servicios'}))].forEach(e => cats[e.cat||'Otros'] = (cats[e.cat||'Otros']||0) + parseFloat(e.amount));
+        const max = Math.max(...Object.values(cats), 1);
+        document.getElementById('categoryChart').innerHTML = Object.entries(cats).map(([n,v])=>`<div class="chart-row"><span style="width:70px; font-size:0.6rem; color:var(--muted)">${n}</span><div class="chart-bar-bg"><div class="chart-bar-fill" style="width:${(v/max)*100}%"></div></div><span style="font-size:0.6rem; font-weight:bold">$${v.toFixed(0)}</span></div>`).join('');
+    }
+
+    function updateSnowball(cards) {
+        let s = [...cards].filter(c=>c.balance>0).sort((a,b)=>a.balance-b.balance);
+        document.getElementById('snowballList').innerHTML = s.map(c=>`<div style="margin-bottom:5px; border-bottom:1px solid var(--border); padding-bottom:5px;">${c.name}: <strong class="blur-text">$${c.balance}</strong></div>`).join('') || 'Sin deudas activas';
+    }
+
+    function updateEveryDollar(total, assigned) {
+        let pct = total > 0 ? (assigned / total) * 100 : 0;
+        document.getElementById('edBar').style.width = Math.min(pct, 100) + '%';
+        let diff = total - assigned;
+        document.getElementById('edStatus').innerText = diff === 0 ? "¡Presupuesto Perfecto!" : `$${diff.toFixed(2)} por asignar`;
+    }
+
+    function addIncome() { appData[getMonthKey(currentDate)].income.push({ date: document.getElementById('incDate').value, desc: document.getElementById('incDesc').value, amount: document.getElementById('incAmount').value }); saveData(); }
+    function addSubscription() { appData[getMonthKey(currentDate)].subs.push({ name: document.getElementById('subName').value, amount: document.getElementById('subAmount').value, day: document.getElementById('subDay').value, paid: false }); saveData(); }
+    function addExpense() { appData[getMonthKey(currentDate)].expenses.push({ date: document.getElementById('expDate').value, desc: document.getElementById('expDesc').value, cat: document.getElementById('expCat').value, amount: document.getElementById('expAmount').value, paid: false }); saveData(); }
+    function togglePaid(type, i) { appData[getMonthKey(currentDate)][type][i].paid = !appData[getMonthKey(currentDate)][type][i].paid; saveData(); }
+    function deleteItem(type, i) { if(confirm("¿Eliminar registro?")) { appData[getMonthKey(currentDate)][type].splice(i, 1); saveData(); } }
+    function editItem(mKey, type, index, field) { let v = prompt("Nuevo valor:", appData[mKey][type][index][field]); if(v) { appData[mKey][type][index][field] = v; saveData(); } }
+    function resetMonth() { if(confirm("¿Borrar todos los datos de este mes?")) { appData[getMonthKey(currentDate)] = { income:[], expenses:[], cards:[], daily:[], subs:[] }; saveData(); } }
+    function changeMonth(o) { currentDate.setMonth(currentDate.getMonth()+o); render(); }
+    function toggleTheme() { document.documentElement.setAttribute('data-theme', document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'); }
+    
+    function openImportModal() { document.getElementById('importModal').style.display='flex'; }
+    function closeImportModal() { document.getElementById('importModal').style.display='none'; }
+    
+    function processImport() {
+        let prev = new Date(currentDate); prev.setMonth(prev.getMonth()-1);
+        const pk = getMonthKey(prev); const ck = getMonthKey(currentDate);
+        if(appData[pk]) {
+            if(document.getElementById('impInc').checked) appData[ck].income = JSON.parse(JSON.stringify(appData[pk].income));
+            if(document.getElementById('impSub').checked) appData[ck].subs = JSON.parse(JSON.stringify(appData[pk].subs)).map(s=>({...s, paid:false}));
+            if(document.getElementById('impExp').checked) appData[ck].expenses = JSON.parse(JSON.stringify(appData[pk].expenses)).map(e=>({...e, paid:false}));
+            if(document.getElementById('impCC').checked) appData[ck].cards = JSON.parse(JSON.stringify(appData[pk].cards)).map(c=>({...c, paid:false}));
+        }
+        saveData(); closeImportModal();
     }
 
     function exportData() {
-        const blob = new Blob([JSON.stringify(appData)], {type: 'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = `backup_cuentas_${getMonthKey(new Date())}.json`;
-        a.click();
+        const blob = new Blob([JSON.stringify(appData)], {type:'application/json'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download=`CuentasClaras_v2.3.json`; a.click();
     }
+    function updateDailyCat(i, v) { appData[getMonthKey(currentDate)].daily[i].cat = v; saveData(); }
 
     render();
 </script>
+// Registro de Service Worker para que Android reconozca la PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGV2ZW50ID0+IHsgZXZlbnQucmVzcG9uZFdpdGgoZmV0Y2goZXZlbnQucmVxdWVzdCkpOyB9KTs=')
+            .then(reg => console.log('PWA Lista'))
+            .catch(err => console.log('Error PWA', err));
+        });
+    }
+
 </body>
 </html>
