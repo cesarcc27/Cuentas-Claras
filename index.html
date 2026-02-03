@@ -1,210 +1,124 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cuentas Claras v2.4</title>
-    
     <meta name="theme-color" content="#3b82f6">
-    <meta name="mobile-web-app-capable" content="yes">
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkN1ZW50YXMgQ2xhcmFzIiwKICAic2hvcnRfbmFtZSI6ICJDdWVudGFzIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmOGZhZmMiLAogICJ0aGVtZV9jbG9yIjogIiMzYjgyZjYiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJodHRwczovL2Nkbi1pY29ucy1wbmcuZmxhdGljb24uY29tLzUxMi8yNDg5LzI0ODkwNjQucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
-
     <style>
-        :root { --primary: #3b82f6; --success: #10b981; --danger: #ef4444; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --border: #e2e8f0; --muted: #64748b; --input-bg: #f1f5f9; }
-        [data-theme="dark"] { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --border: #334155; --muted: #94a3b8; --input-bg: #334155; }
-        
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 10px; transition: 0.3s; padding-bottom: 50px; }
-        .container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
-        
-        header { background: var(--card); padding: 15px; border-radius: 16px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .card { background: var(--card); padding: 18px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
-        .stat-box { padding: 12px; border-radius: 12px; background: var(--input-bg); text-align: center; }
-        .stat-val { font-size: 1.1rem; font-weight: bold; display: block; }
-        
-        .everydollar-bar { height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; margin: 10px 0; display: none; }
-        .everydollar-progress { height: 100%; background: var(--success); transition: 0.5s; }
+        :root { --primary: #3b82f6; --success: #10b981; --danger: #ef4444; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; --border: #e2e8f0; --input-bg: #f1f5f9; }
+        [data-theme="dark"] { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --border: #334155; --input-bg: #334155; }
+        body { font-family: system-ui; background: var(--bg); color: var(--text); margin: 0; padding: 10px; transition: 0.3s; }
+        .card { background: var(--card); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 15px; }
+        .flex { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+        .grid-cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 10px; }
+        .day { padding: 8px; background: var(--input-bg); border-radius: 6px; text-align: center; font-size: 0.7rem; position: relative; }
+        .day.has-event { background: var(--primary); color: white; }
+        .btn { padding: 8px 12px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
+        .btn-main { background: var(--primary); color: white; width: 100%; }
+        input { width: 100%; padding: 10px; margin: 5px 0; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); box-sizing: border-box; }
+        .everydollar-bar { height: 12px; background: #e2e8f0; border-radius: 6px; overflow: hidden; margin: 10px 0; display: none; }
         .ed-active .everydollar-bar { display: block; }
-
-        input, select { width: 100%; padding: 10px; margin: 5px 0; border-radius: 8px; border: 1px solid var(--border); background: var(--input-bg); color: var(--text); box-sizing: border-box; }
-        .btn { padding: 10px 15px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; width: 100%; margin-top: 5px; }
-        .btn-primary { background: var(--primary); color: white; }
-        
-        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--border); }
-        .blur-text { transition: 0.3s; }
-        .privacy-active .blur-text { filter: blur(6px); }
-        
-        .switch-container { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; font-weight: bold; }
-        .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+        .privacy-active .blur { filter: blur(6px); }
+        .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 20px; }
-        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--success); }
-        input:checked + .slider:before { transform: translateX(20px); }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 20px; transition: .4s; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .4s; }
+        input:checked + .slider { background: var(--success); }
+        input:checked + .slider:before { transform: translateX(14px); }
     </style>
 </head>
-<body id="mainBody">
+<body id="b">
 
-<div class="container">
-    <header>
+<div style="max-width: 500px; margin: 0 auto;">
+    <header class="card flex">
         <div>
-            <h3 style="margin:0; color:var(--primary)">Cuentas Claras v2.4</h3>
-            <div class="switch-container">
-                <label class="switch">
-                    <input type="checkbox" id="edSwitch" onchange="toggleED()">
-                    <span class="slider"></span>
-                </label>
-                <span>EveryDollar Mode</span>
+            <h2 style="margin:0; color:var(--primary)">Cuentas Claras <small>v2.4</small></h2>
+            <div class="flex" style="margin-top:5px">
+                <label class="switch"><input type="checkbox" id="edS" onchange="toggleED()"><span class="slider"></span></label>
+                <small>EveryDollar</small>
             </div>
         </div>
-        <button onclick="togglePrivacy()" class="btn" style="width:auto; background:var(--input-bg)">👁️</button>
+        <button class="btn" onclick="document.getElementById('b').classList.toggle('privacy-active')">👁️</button>
     </header>
 
-    <div id="edContainer" class="card">
-        <div style="display:flex; justify-content:space-between; align-items:center">
-            <h4 style="margin:0">Estado del Presupuesto</h4>
-            <span id="edStatus" class="btn-success" style="padding:2px 8px; border-radius:12px; font-size:0.7rem">$0 por asignar</span>
-        </div>
-        <div class="everydollar-bar"><div id="edBar" class="everydollar-progress" style="width: 0%"></div></div>
-        <div class="grid" style="margin-top:10px">
-            <div class="stat-box"> <small>INGRESOS</small> <span id="resIngresos" class="stat-val blur-text">$0</span> </div>
-            <div class="stat-box"> <small>GASTOS</small> <span id="resGastos" class="stat-val blur-text">$0</span> </div>
-            <div class="stat-box"> <small>RESTANTE</small> <span id="resRestante" class="stat-val blur-text">$0</span> </div>
-        </div>
+    <div class="card" id="edC">
+        <div class="flex"><b>Presupuesto</b> <span id="edS" class="blur">$0</span></div>
+        <div class="everydollar-bar"><div id="edB" style="height:100%; background:var(--success); width:0%"></div></div>
     </div>
 
-    <div class="grid">
-        <div class="card">
-            <h4>💰 Ingresos</h4>
-            <input type="text" id="inDesc" placeholder="Fuente">
-            <input type="number" id="inAmt" placeholder="Monto">
-            <button class="btn btn-primary" onclick="addItem('ingresos')">+ Añadir</button>
-            <ul id="listIngresos" style="list-style:none; padding:0; font-size:0.8rem"></ul>
+    <div class="card">
+        <div class="flex">
+            <button class="btn" onclick="changeMonth(-1)">◀</button>
+            <b id="mLabel">Marzo 2026</b>
+            <button class="btn" onclick="changeMonth(1)">▶</button>
         </div>
-        <div class="card">
-            <h4>🏠 Fijos</h4>
-            <input type="text" id="fixDesc" placeholder="Renta, Luz...">
-            <input type="number" id="fixAmt" placeholder="Monto">
-            <button class="btn btn-primary" onclick="addItem('fijos')">+ Añadir</button>
-            <ul id="listFijos" style="list-style:none; padding:0; font-size:0.8rem"></ul>
+        <div class="grid-cal" id="cal"></div>
+    </div>
+
+    <div class="card">
+        <h4>💰 Ingresos e Inversiones</h4>
+        <div id="ingL"></div>
+        <div class="flex" style="margin-top:10px">
+            <input id="iN" placeholder="Nombre">
+            <input id="iV" type="number" placeholder="$">
+            <button class="btn btn-main" onclick="add('ing')">+</button>
         </div>
     </div>
 
     <div class="card">
-        <h4>🛒 Gastos Diarios</h4>
-        <div style="display:flex; gap:5px">
-            <input type="text" id="dDesc" placeholder="Concepto">
-            <input type="number" id="dAmt" placeholder="$" style="width:80px">
-            <button class="btn btn-primary" onclick="addItem('diarios')" style="width:60px">OK</button>
+        <h4>🏠 Gastos Fijos / Vencimientos</h4>
+        <div id="fixL"></div>
+        <div class="flex" style="margin-top:10px">
+            <input id="fN" placeholder="Servicio">
+            <input id="fV" type="number" placeholder="$">
+            <input id="fD" type="number" placeholder="Día" style="width:60px">
+            <button class="btn btn-main" onclick="add('fix')">+</button>
         </div>
-        <table style="margin-top:10px">
-            <tbody id="listDiarios"></tbody>
-        </table>
-    </div>
-
-    <div class="card">
-        <h4>💳 Tarjetas de Crédito</h4>
-        <input type="text" id="ccName" placeholder="Nombre Tarjeta">
-        <input type="number" id="ccLimit" placeholder="Límite">
-        <input type="number" id="ccDebt" placeholder="Deuda Actual">
-        <button class="btn btn-primary" onclick="addItem('tarjetas')">Registrar Tarjeta</button>
-        <div id="listCards" style="margin-top:10px"></div>
     </div>
 </div>
 
 <script>
-    // Registro PWA
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('data:application/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGU9PmV7fSk7');
-    }
+    let cur = new Date();
+    let db = JSON.parse(localStorage.getItem('cc_v2.4')) || { ed: false, months: {} };
 
-    let data = JSON.parse(localStorage.getItem('cc_v24_data')) || {
-        ingresos: [], fijos: [], diarios: [], tarjetas: [], edMode: false
-    };
+    function save() { localStorage.setItem('cc_v2.4', JSON.stringify(db)); render(); }
+    
+    function toggleED() { db.ed = document.getElementById('edS').checked; save(); }
 
-    function save() {
-        localStorage.setItem('cc_v24_data', JSON.stringify(data));
-        render();
-    }
-
-    function toggleED() {
-        data.edMode = document.getElementById('edSwitch').checked;
-        save();
-    }
-
-    function togglePrivacy() {
-        document.getElementById('mainBody').classList.toggle('privacy-active');
-    }
-
-    function addItem(type) {
-        const desc = document.getElementById(type === 'ingresos' ? 'inDesc' : type === 'fijos' ? 'fixDesc' : type === 'diarios' ? 'dDesc' : 'ccName').value;
-        const amt = parseFloat(document.getElementById(type === 'ingresos' ? 'inAmt' : type === 'fijos' ? 'fixAmt' : type === 'diarios' ? 'dAmt' : 'ccLimit').value);
-        
-        if(!desc || isNaN(amt)) return;
-
-        if(type === 'tarjetas') {
-            data.tarjetas.push({ name: desc, limit: amt, debt: parseFloat(document.getElementById('ccDebt').value) || 0 });
-        } else {
-            data[type].push({ desc, amt, date: new Date().toLocaleDateString() });
-        }
-        
-        save();
-    }
-
-    function deleteItem(type, index) {
-        data[type].splice(index, 1);
+    function add(type) {
+        let m = `${cur.getFullYear()}-${cur.getMonth()}`;
+        if(!db.months[m]) db.months[m] = {ing:[], fix:[]};
+        if(type==='ing') db.months[m].ing.push({n: document.getElementById('iN').value, v: parseFloat(document.getElementById('iV').value)});
+        if(type==='fix') db.months[m].fix.push({n: document.getElementById('fN').value, v: parseFloat(document.getElementById('fV').value), d: parseInt(document.getElementById('fD').value)});
         save();
     }
 
     function render() {
-        // UI EveryDollar
-        document.getElementById('edSwitch').checked = data.edMode;
-        document.body.classList.toggle('ed-active', data.edMode);
-
-        const totalIn = data.ingresos.reduce((s, x) => s + x.amt, 0);
-        const totalOut = data.fijos.reduce((s, x) => s + x.amt, 0) + data.diarios.reduce((s, x) => s + x.amt, 0);
-        const rest = totalIn - totalOut;
-
-        document.getElementById('resIngresos').innerText = `$${totalIn}`;
-        document.getElementById('resGastos').innerText = `$${totalOut}`;
-        document.getElementById('resRestante').innerText = `$${rest}`;
+        document.getElementById('edS').checked = db.ed;
+        document.body.classList.toggle('ed-active', db.ed);
+        let mKey = `${cur.getFullYear()}-${cur.getMonth()}`;
+        let data = db.months[mKey] || {ing:[], fix:[]};
         
-        const perc = totalIn > 0 ? (totalOut / totalIn) * 100 : 0;
-        document.getElementById('edBar').style.width = `${Math.min(perc, 100)}%`;
-        document.getElementById('edStatus').innerText = rest === 0 ? "Presupuesto Balanceado" : `$${rest} por asignar`;
+        document.getElementById('mLabel').innerText = cur.toLocaleString('es', {month:'long', year:'numeric'});
+        
+        // Render Calendario
+        let days = new Date(cur.getFullYear(), cur.getMonth()+1, 0).getDate();
+        let html = '';
+        for(let i=1; i<=days; i++) {
+            let has = data.fix.some(f => f.d === i);
+            html += `<div class="day ${has?'has-event':''}">${i}</div>`;
+        }
+        document.getElementById('cal').innerHTML = html;
 
         // Render Listas
-        ['ingresos', 'fijos'].forEach(type => {
-            document.getElementById(`list${type.charAt(0).toUpperCase() + type.slice(1)}`).innerHTML = data[type].map((x, i) => `
-                <li style="display:flex; justify-content:space-between; padding:5px 0">
-                    <span>${x.desc}</span>
-                    <b class="blur-text">$${x.amt} <span onclick="deleteItem('${type}', ${i})" style="color:red; cursor:pointer">×</span></b>
-                </li>
-            `).join('');
-        });
-
-        document.getElementById('listDiarios').innerHTML = data.diarios.map((x, i) => `
-            <tr>
-                <td>${x.date.split('/')[0]}/${x.date.split('/')[1]}</td>
-                <td>${x.desc}</td>
-                <td class="blur-text"><b>$${x.amt}</b></td>
-                <td onclick="deleteItem('diarios', ${i})" style="color:red">×</td>
-            </tr>
-        `).join('');
-
-        document.getElementById('listCards').innerHTML = data.tarjetas.map((x, i) => `
-            <div style="font-size:0.8rem; background:var(--input-bg); padding:10px; border-radius:8px; margin-bottom:5px">
-                <b>${x.name}</b><br>
-                Uso: $${x.debt} / $${x.limit}
-                <div style="height:4px; background:#ccc; margin-top:4px"><div style="width:${(x.debt/x.limit)*100}%; background:var(--danger); height:100%"></div></div>
-            </div>
-        `).join('');
+        document.getElementById('ingL').innerHTML = data.ing.map(x => `<div class="flex"><span>${x.n}</span><b class="blur">$${x.v}</b></div>`).join('');
+        document.getElementById('fixL').innerHTML = data.fix.map(x => `<div class="flex"><span>(${x.d}) ${x.n}</span><b class="blur">$${x.v}</b></div>`).join('');
     }
 
+    function changeMonth(v) { cur.setMonth(cur.getMonth()+v); render(); }
     render();
 </script>
-
 </body>
 </html>
