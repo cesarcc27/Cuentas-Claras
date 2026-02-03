@@ -104,6 +104,13 @@
         .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--success); }
         input:checked + .slider:before { transform: translateX(18px); }
+
+        @media (max-width: 600px) {
+        body { padding: 10px; }
+        header { padding: 15px; flex-direction: column; text-align: center; }
+        .quick-entry-bar { padding: 10px; flex-direction: column; }
+        .quick-entry-bar input { width: 100%; }
+    }
     </style>
 </head>
 <body id="mainBody">
