@@ -243,6 +243,21 @@ th, td {
     }
 }
 
+.container {
+    display: flex;
+    flex-direction: column; /* Apila uno tras otro */
+}
+
+header {
+    order: -2; /* El número más bajo sube al principio */
+}
+
+.ed-panel {
+    order: -1; /* Se queda justo debajo del header */
+}
+
+/* El resto de las secciones se acomodarán solas después */
+
     </style>
 </head>
 <body id="mainBody">
