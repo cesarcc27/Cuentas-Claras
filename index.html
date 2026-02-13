@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" data-theme="light">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -12,9 +12,9 @@
 
     <style>
         :root {
-            --primary: #3b82f6; --success: #10b981; --danger: #ef4444;
+            --primary: #3bf683; --success: #10b981; --danger: #ff3939;
             --bg: #f8fafc; --card: #ffffff; --text: #1e293b;
-            --border: #e2e8f0; --muted: #64748b; --accent: #f59e0b;
+            --border: #e2e8f0; --muted: #64748b; --accent: #9ff50b;
             --input-bg: #f1f5f9;
         }
         [data-theme="dark"] {
@@ -25,18 +25,18 @@
         .container { max-width: 1450px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
 
         /* --- NUEVOS ESTILOS NAVEGACIÓN --- */
-        .tab-content { display: none; width: 100%; flex-direction: column; gap: 20px; }
+        .tab-content { display: none; width: 100%; flex-direction: column; gap: 8px; }
         .tab-content.active { display: flex; }
 
         .bottom-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
             background: var(--card); display: flex; justify-content: space-around;
             align-items: center; border-top: 1px solid var(--border); z-index: 2000;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
         }
         .nav-item { 
             display: flex; flex-direction: column; align-items: center; 
-            color: var(--muted); font-size: 0.75rem; cursor: pointer; flex: 1; padding: 10px 0;
+            color: var(--muted); font-size: 0.99rem; cursor: pointer; flex: 1; padding: 5px 0;
         }
         .nav-item.active { color: var(--primary); font-weight: bold; }
         .nav-item span { font-size: 1.4rem; margin-bottom: 2px; }
@@ -120,7 +120,7 @@
             <div style="margin-top:10px; display:flex; gap:15px; align-items:center;">
                 <label class="switch"><input type="checkbox" id="edToggle" onchange="toggleEDMode()"><span class="slider"></span></label>
                 <span style="font-size:0.85rem; font-weight: 500;">EveryDollar Mode</span>
-                <button id="privacyBtn" onclick="togglePrivacy()" style="font-size:0.75rem">👁️ Privacidad: OFF</button>
+                <button id="privacyBtn" onclick="togglePrivacy()" style="font-size:0.80rem">👁️ Privacidad: OFF</button>
             </div>
         </div>
         <div style="text-align: center">
@@ -129,7 +129,7 @@
                 <h2 id="currentMonthLabel" style="margin:0; min-width:180px; font-weight: 800; text-transform: capitalize;"></h2>
                 <button onclick="changeMonth(1)">▶</button>
             </div>
-            <button onclick="resetMonth()" class="danger" style="margin-top:10px; padding: 4px 12px; font-size: 0.65rem; opacity: 0.8;">BORRAR DATOS DEL MES</button>
+            <button onclick="resetMonth()" class="danger" style="margin-top:10px; padding: 4px 12px; font-size: 0.65rem; opacity: 0.;">BORRAR DATOS DEL MES</button>
         </div>
         <div style="display:flex; gap:10px">
             <button onclick="toggleTheme()" style="background: var(--input-bg);">🌓</button>
